@@ -77,6 +77,13 @@ $.addClass = function($el, className) {
   }
 }
 
+$.attr = function($el, attr) {
+  if (!$el) {
+    return;
+  }
+  return $el.getAttribute(attr)
+}
+
 /**
  * remove className(s) from an or multiple element(s)
  * @public

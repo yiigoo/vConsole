@@ -153,6 +153,20 @@ class VConsoleLogTab extends VConsolePlugin {
       that.printLog(that.logList[i]);
     }
     that.logList = [];
+
+    // 复制到剪切板
+    let copyToClip = (content) =>{
+      var aux = document.createElement("input"); 
+      aux.setAttribute("value", content); 
+      document.body.appendChild(aux); 
+      aux.select();
+      document.execCommand("copy"); 
+      document.body.removeChild(aux);
+    }
+    $.bind($.all('.vc-clip-item', that.$tabbox), 'click', function (e) {
+      copyToClip($.attr(this,'clip'))
+    })
+    
   }
 
   /**
@@ -457,6 +471,7 @@ class VConsoleLogTab extends VConsolePlugin {
    *
    * @protected
    */
+  
   printNewLog(item, logs) {
 
     // create line
@@ -504,7 +519,7 @@ class VConsoleLogTab extends VConsolePlugin {
           log = this.getFoldedLine(logs[i]);
         } else {
           // default
-          log = (logStyle[i] ? `<span style="${logStyle[i]}"> ` : '<span> ') + tool.htmlEncode(logs[i]).replace(/\n/g, '<br/>') + '</span>';
+          log = (logStyle[i] ? `<span style="${logStyle[i]}"> ` : '<span> ') + tool.htmlEncode(logs[i]).replace(/\n/g, '<br/>') + '</span> <button clip="' + tool.htmlEncode(logs[i]).replace(/\n/g, '<br/>') + '" class="vc-clip-item">复制</button> ';
         }
       } catch (e) {
         log = '<span> [' + (typeof logs[i]) + ']</span>';
